@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {rank,parseInventory,briefing} from '../public/engine.js';
+const now=Date.parse('2026-11-26T00:00:00Z');
+const record={id:'CVE-2026-1234',vendor:'Microsoft',product:'Exchange',title:'Example',added:'2026-11-25',ransomware:true,epss:null};
+test('inventory parses flags and ignores blank rows',()=>assert.deepEqual(parseInventory('Microsoft Exchange | internet | critical\n\n'),[{product:'Microsoft Exchange',internet:true,critical:true}]));
+test('explainable priority and matching',()=>{const [r]=rank([record],parseInventory('Microsoft Exchange | internet | critical'),30,now);assert.equal(r.score,100);assert.equal(r.priority,'Critical');assert.equal(r.epss,null);assert.equal(r.reasons.reduce((s,x)=>s+x[1],0),100);});
+test('does not match vendor alone or unrelated technology',()=>assert.equal(rank([record],parseInventory('Microsoft\nApache Tomcat'),30,now).length,0));
+test('time window and old catalogue records',()=>{const old={...record,added:'2025-01-01'};assert.equal(rank([old],parseInventory('Exchange'),30,now).length,0);assert.equal(rank([old],parseInventory('Exchange'),0,now).length,1);});
+test('export labels demo, missing EPSS and limitations',()=>{const rows=rank([record],parseInventory('Exchange'),30,now);const b=briefing({name:'Example',industry:'Insurance'},{demo:true,source:'Synthetic'},rows,30);assert.match(b,/SYNTHETIC DEMO/);assert.match(b,/EPSS: Unavailable/);assert.match(b,/not confirmed affected assets/);assert.doesNotMatch(b,/nvd.nist.gov/);});

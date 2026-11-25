@@ -1,0 +1,7 @@
+const date=n=>new Date(Date.now()-n*86400000).toISOString().slice(0,10);
+export const demo={demo:true,source:'Synthetic training records (not real CVEs)',version:'demo',released:date(0),fetchedAt:new Date().toISOString(),epssStatus:'Synthetic scores',records:[
+{id:'DEMO-001',vendor:'Microsoft',product:'Exchange',title:'Illustrative email server vulnerability',description:'Fictional example for evaluating internet-facing email exposure.',action:'Validate versions and apply verified vendor fixes.',added:date(2),due:date(-12),ransomware:true,epss:{score:.82,date:date(0)}},
+{id:'DEMO-002',vendor:'Fortinet',product:'FortiOS',title:'Illustrative network gateway vulnerability',description:'Fictional example for perimeter security prioritisation.',action:'Review gateway inventory and approved patch procedure.',added:date(8),due:date(-8),ransomware:false,epss:{score:.54,date:date(0)}},
+{id:'DEMO-003',vendor:'Apache',product:'Tomcat',title:'Illustrative application server vulnerability',description:'Fictional example for internal application services.',action:'Check deployment versions and vendor guidance.',added:date(24),due:date(-2),ransomware:false,epss:null},
+{id:'DEMO-004',vendor:'Citrix',product:'NetScaler',title:'Illustrative remote access vulnerability',description:'Fictional record not matched by the sample profile.',action:'Confirm inventory and exposure.',added:date(5),due:date(-10),ransomware:true,epss:null}
+]};
