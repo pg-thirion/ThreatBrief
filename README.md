@@ -6,7 +6,7 @@ ThreatBrief consumes the CISA Known Exploited Vulnerabilities (KEV) catalogue, e
 
 ## Run
 
-Requires Node.js 20+.
+Requires Node.js 22+.
 
 ```sh
 npm start
@@ -19,12 +19,12 @@ Open http://localhost:3000. The included Vercel configuration also supports impo
 
 1. Enter an organisation name, industry and one product or technology per line. Use the actual product name, not a company-wide vendor name.
 2. Mark internet-facing and business-critical assets using the optional pipe-separated flags, e.g. `Microsoft Exchange | internet | critical`.
-3. Refresh intelligence. Select a date window and review ranked candidate matches.
+3. Refresh intelligence. Select a date window (all catalogue history by default) and review ranked candidate matches.
 4. Validate the installed version and configuration, confirm exposure, assign remediation, and export a briefing.
 
 ## Methodology
 
-KEV confirms exploitation in the wild, not compromise of your organisation. Product token matching is a heuristic, not CPE/version matching. The 0–100 priority score is not CVSS or a probability. It combines a 45-point KEV baseline, internet exposure (+25), business criticality (+15), known ransomware use (+10), and recent addition within 30 days (+5). Unmatched records are excluded from the organisation queue. EPSS is shown separately (when available), not used to double-count exploitation evidence. CISA due dates are federal remediation deadlines, not universal obligations.
+KEV confirms exploitation in the wild, not compromise of your organisation. Product token matching is a heuristic, not CPE/version matching. The 0–100 priority score is not CVSS or a probability. It combines a 45-point KEV baseline, internet exposure (+25), business criticality (+15) for the highest-scoring matched asset, known ransomware use (+10), and recent addition within 30 days (+5). Unmatched records are excluded from the organisation queue. EPSS is shown separately (when available), not used to double-count exploitation evidence. CISA due dates are federal remediation deadlines, not universal obligations.
 
 ## Sources
 
@@ -36,4 +36,14 @@ The server fetches fixed public URLs only, caches successful results for 15 minu
 
 ## Scope
 
-This MVP is a deterministic, explainable intelligence engine, not an LLM service. It covers known exploited vulnerabilities, not comprehensive threat actor, phishing or malware intelligence. Refresh is user-triggered and runs at page load; unattended scheduled reports, team accounts, version-aware matching and integrations are future extensions. Treat all output as decision support subject to analyst verification.
+This MVP is a deterministic, explainable intelligence engine, not an LLM service. It covers known exploited vulnerabilities, not comprehensive threat actor, phishing or malware intelligence. The dashboard refreshes on page load or user request; the CLI supports unattended execution; team accounts, version-aware matching and integrations are future extensions. Treat all output as decision support subject to analyst verification.
+
+## Operational usage
+
+Run `npm run check` and `npm test` before deploying. Docker: `docker build -t threatbrief .` then `docker run --rm -p 127.0.0.1:3000:3000 threatbrief`. Put a TLS reverse proxy with request limits in front of any public Node deployment. `/healthz` measures process health, not feed health.
+
+For private scheduled briefings, copy `examples/profile.example.json` to a protected file named `organisation.local.json`, modify it, create a private reports directory, and run `npm run brief -- organisation.local.json reports/briefing.md 0` from a scheduler (cron or Task Scheduler). The CLI exits nonzero on invalid profile or stale/unavailable data; successful reports are replaced atomically with owner-only permissions on POSIX. Never commit real inventories or reports. Schedule and monitoring must be configured by the operator.
+
+Feed validation rejects malformed or duplicate records, response reads have byte limits, concurrent refreshes are coalesced, errors back off for 60 seconds, and last-known-good snapshots expire after 24 hours of failed refreshes. The catalogue is flagged stale if its release is more than seven days old. EPSS coverage is reported explicitly. Data cache is per process and does not survive restarts.
+
+See SECURITY.md and docs/OPERATIONS.md for deployment requirements and release gates. This release is not an independently audited or certified production system.
