@@ -20,3 +20,7 @@ Monitor API 503 rate, stale flag, catalogue release age, EPSS coverage and upstr
 ## Known limitations
 
 KEV-only coverage, product-name matching, newest-40 EPSS coverage, no multi-user access control, no persistent server cache, no LLM generation. A CISA due date is a US federal deadline; forensic-triage flags require review of applicability. No report confirms compromise or applicability.
+
+## Local analyst data
+
+Local workspace data includes case state, notes, evidence, watchlist, bounded activity and one catalogue baseline. Organisation name and industry identify local scopes; live and demo are isolated. It is not a durable audit trail or shared case database. Back up before browser storage clearing. CSV/JSON/Markdown may contain sensitive analyst input, so restrict report handling. Test status evidence enforcement, local persistence, scope switching, import validation, all filters, pagination and exports during browser acceptance. Catalogue baseline changes are full-catalogue CVE additions/removals, not changes in exposure.

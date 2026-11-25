@@ -3,7 +3,7 @@ import {readFile} from 'node:fs/promises';
 import {pathToFileURL} from 'node:url';
 import {getIntelligence} from './lib/intelligence.mjs';
 import {securityHeaders} from './lib/security.mjs';
-const files={'/':'index.html','/index.html':'index.html','/app.js':'app.js','/engine.js':'engine.js','/style.css':'style.css','/demo.js':'demo.js','/favicon.svg':'favicon.svg'};
+const files={'/':'index.html','/index.html':'index.html','/app.js':'app.js','/engine.js':'engine.js','/workspace.js':'workspace.js','/workspace-ui.js':'workspace-ui.js','/style.css':'style.css','/demo.js':'demo.js','/favicon.svg':'favicon.svg'};
 const types={html:'text/html; charset=utf-8',js:'text/javascript; charset=utf-8',css:'text/css; charset=utf-8',svg:'image/svg+xml'};
 export function makeServer({getFeed=getIntelligence}={}){
   const server=createServer(async(req,res)=>{

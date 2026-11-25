@@ -47,3 +47,11 @@ For private scheduled briefings, copy `examples/profile.example.json` to a prote
 Feed validation rejects malformed or duplicate records, response reads have byte limits, concurrent refreshes are coalesced, errors back off for 60 seconds, and last-known-good snapshots expire after 24 hours of failed refreshes. The catalogue is flagged stale if its release is more than seven days old. EPSS coverage is reported explicitly. Data cache is per process and does not survive restarts.
 
 See SECURITY.md and docs/OPERATIONS.md for deployment requirements and release gates. This release is not an independently audited or certified production system.
+
+## Analyst workspace (v0.3)
+
+The browser now includes catalogue discovery, case status, ownership, notes, evidence and tags, evidence requirements for high-impact decisions, internal SLA targets and overrides, overdue and unassigned views, watchlists, ransomware and forensic filters, vendor and tag filters, five sort modes, pagination, vendor concentration, EPSS coverage, activity history, baseline comparisons, filtered CSV/JSON, Markdown case appendix, backup/restore, workspace clearing and print views.
+
+Workspace state is local to the browser, separated by organisation name, industry and demo/live mode. Use distinct organisation names. It is not encrypted, shared, authenticated or tamper-proof. A renamed organisation creates a different workspace. Export backups to restricted storage. CSV cells are quoted and formula-like values prefixed. Full catalogue discovery is not an organisation exposure claim. Markdown uses the full matched date window; CSV/JSON use the visible filters (all matching pages). Print displays the current page. Internal SLA defaults are 3/14/30 days from case creation by current priority, not CISA deadlines. No status constitutes independent verification.
+
+All added logic has offline unit test definitions; run npm test and npm run check. Browser integration acceptance and live-source tests remain release requirements.

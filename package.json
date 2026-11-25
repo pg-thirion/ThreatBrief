@@ -1,13 +1,14 @@
 {
   "name": "threatbrief",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "scripts": {
     "start": "node server.mjs",
-    "test": "node --test",
+    "test": "node --test test/*.test.mjs",
     "brief": "node cli/brief.mjs",
-    "check": "node --check public/app.js && node --check server.mjs && node --check api/intelligence.mjs && node --check cli/brief.mjs"
+    "check": "node --check public/app.js && node --check server.mjs && node --check api/intelligence.mjs && node --check cli/brief.mjs && node --check public/workspace.js && node --check public/workspace-ui.js && node --check lib/intelligence.mjs && node --check public/engine.js",
+    "test:browser": "node test/browser-smoke.mjs"
   },
   "engines": {
     "node": ">=22"

@@ -26,3 +26,12 @@ jobs:
           docker run -d --name threatbrief -p 127.0.0.1:3000:3000 threatbrief
           trap 'docker rm -f threatbrief' EXIT
           curl --retry 10 --retry-connrefused --fail http://127.0.0.1:3000/healthz
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm run test:browser
